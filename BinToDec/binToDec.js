@@ -49,6 +49,10 @@ Decimal to Binary Conversion
 */
 function decToBin(numberToWorkWith) {
 var numberToWorkWith = parseInt(numberToWorkWith)
+if (isNaN(numberToWorkWith) == true) {
+console.log("Conversion Failed - The number is NaN (Not a Number!)")
+element.innerHTML = "Conversion Failed - Please make sure you entered a NUMBER!"
+} else {
 var binNum = ""
 var index = 0
 while (numberToWorkWith != 0) {
@@ -59,10 +63,6 @@ var numberToWorkWith = Math.floor(numberToWorkWith)
 var binNum = `${remainder}${binNum}`
 console.log(binNum)
 }
-if (isNaN(binNum) == true) {
-console.log("Conversion Failed - The number is NaN (Not a Number!)")
-element.innerHTML = "Conversion Failed - Please make sure you entered a NUMBER!"
-} else {
 console.log(`Conversion Complete - The Number is ${binNum}!`)
 element.innerHTML = `Conversion Successful - The Numbers in Decimal is ${binNum}!`    
 }
