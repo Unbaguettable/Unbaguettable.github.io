@@ -6,3 +6,7 @@ html {
 .title {
     text-align: center;
 }
+
+.rightSide {
+    text-align: right;
+}
