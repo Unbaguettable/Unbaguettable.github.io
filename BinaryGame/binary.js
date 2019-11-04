@@ -19,13 +19,17 @@ newQuestion(31)
 function mediumMode() {
 hideBtn()
 subtitleEle.innerHTML = "Medium Mode"
-alert("This does not work yet!")
+globalThis(mode = "medium")
+timerStart(20)
+newQuestion(63)
 }
 
 function hardMode() {
 hideBtn()
 subtitleEle.innerHTML = "Hard Mode"
-alert("This does not work yet!")
+globalThis(mode = "hard")
+timerStart(10)
+newQuestion(255)
 }
 
 function hideBtn() {
@@ -53,9 +57,13 @@ globalThis(timerInterval = setInterval(function() {
 timer -= 1
 timerEle.innerHTML = timer
 if (timer === -1) {
-    timerEle.innerHTML = "The timer has run out. YOU ARE NOW OFFICIALY A FAILURE AND YOU LOST."
+    questionEle.innerHTML = "The timer has run out. You Lose."
     timerExpired = 1
     clearInterval(timerInterval)
+    showBtn()
+    timerEle.innerHTML = ""
+    document.getElementById("questionAnswer").value = ""
+    subtitleEle.innerHTML = "By Unbaguettable"
 }
 }, 1000))
 }
@@ -74,16 +82,15 @@ if (checkAnswerInput == answerToQuestion) {
     switch(mode) {
         case "easy":
             newQuestion(31)
-            timer += 30
+            timer += 20
             break;
         case "medium":
-            //newQuestion()
-            //timer += unkonwn
+            newQuestion(63)
+            timer += 15
             break;
         case "hard":
-            //newQuestion()
-            //timer += unkonwn
-        
+            newQuestion(255)
+            timer += 10        
     }
     document.getElementById("questionAnswer").value = "";
 } else {
@@ -91,6 +98,8 @@ if (checkAnswerInput == answerToQuestion) {
     showBtn()
     questionEle.innerHTML = `Incorrect. The correct answer was ${answerToQuestion}.`;
     document.getElementById("questionAnswer").value = "";
+    timerEle.innerHTML = ""
+    subtitleEle.innerHTML = "By Unbaguettable"
 }
 }
 
