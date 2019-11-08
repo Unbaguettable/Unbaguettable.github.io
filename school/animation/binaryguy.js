@@ -2,6 +2,7 @@ var c = document.getElementById("binaryGuy")
 var ctx = c.getContext("2d")
 var speakEle = document.getElementById("speak")
 var equationEle = document.getElementById("equation")
+var answerEle = document.getElementById("answer")
 
 function go() {
     hideBtn()
@@ -59,18 +60,57 @@ setTimeout(print, 39900, "Now we remember the remainder.")
 // 30 * 100 = 3000 + 2000 = 5000 + 39900 = 44900
 setTimeout(print, 44900, "So the remainder of 10/2 is 0!")
 // 30 * 100 = 3000 + 2000 = 5000 + 44900 = 49900
-setTimeout(print, 49900, "Now write down 0 on a piece of paper. That's the last digit of the binary number!")
+setTimeout(print, 49900, "Now write down the remainder on a piece of paper. That's the last digit of the binary number!")
 setTimeout(function() {
 equationEle.innerHTML = "10 / 2 = 5 R: 0"
+answerEle.innerHTML = "Answer: 0"
 }, 58000)
-// 81 * 100 = 8100 + 2000 = 10100 + 49900 = 60000
-setTimeout(print, 60000, "Now we do the same for the new number. 5 divided by 2...")
+// 93 * 100 = 9300 + 2000 =  + 49900 = 61200
+setTimeout(print, 61200, "Now we do the same for the new number. 5 divided by 2...")
 setTimeout(function() {
 equationEle.innerHTML = "5 / 2"
-}, 67600)
+}, 65600)
 // 56 * 100 = 5600 + 2000 = 7600 + 60000 = 67600
-
+setTimeout(print, 67600, "The answer is 2.5! Let's round it down to 2 though.")
+setTimeout(function() {
+equationEle.innerHTML = "5 / 2 = 2"
+}, 74900)
+// 73 * 100 = 7300 + 2000 = 9300 + 67600 = 76900
+setTimeout(print, 76900, "And the remainder is 1. That's is our next digit in the number!")
+setTimeout(function() {
+equationEle.innerHTML = "5 / 2 = 2 R: 1"
+answerEle.innerHTML = "Answer: 10"
+}, 83200)
+// 63 * 100 = 6300 + 2000 = 8300 + 76900 = 85200
+setTimeout(buildBinGuy, 85200, 80, 380)
+setTimeout(buildBinGuy, 85500, 80, 360)
+setTimeout(buildBinGuy, 85900, 80, 380)
+setTimeout(buildBinGuy, 86300, 80, 400)
+setTimeout(print, 86700, "And now we do the same. 2/2 = 1, with a remainder of 0...")
+setTimeout(function() {
+equationEle.innerHTML = "2/2 = 1 R:0"
+answerEle.innerHTML = "Answer: 010"
+}, 92400)
+// 57 * 100 = 5700 + 2000 = 7700 + 86700 = 94400
+setTimeout(print, 94400, "And 1/2 = 0 with a remainder of 1.")
+setTimeout(function() {
+equationEle.innerHTML = "1/2 = 0 R:1"
+answerEle.innerHTML = "Answer: 1010"
+}, 97800)
+// 34 * 100 = 3400 + 2000 = 5400 + 94400 = 99800
+setTimeout(print, 99800, "And we're done! The answer is 1010!")
+setTimeout(function() {
+equationEle.innerHTML = ""
+}, 103300)
+// 35 * 100 = 3500 + 2000 = 5500 + 99800 = 105,300
+setTimeout(buildBinGuy, 105700, 120, 400)
+setTimeout(buildBinGuy, 106100, 140, 400)
+setTimeout(buildBinGuy, 106500, 160, 400)
+setTimeout(buildBinGuy, 106900, 180, 400)
+setTimeout(print, 107300, "So to recap, you divide the number by two, add the remainder to the front of the number, and keep doing that till you get 0!")
 }
+// 124 * 100 = 12400 + 10000 = 22400 + 107300 = 129700
+
 function hideBtn() {
     document.getElementById("infoPara").innerHTML = ""
     document.getElementById("goBtn").style.visibility = "hidden"
