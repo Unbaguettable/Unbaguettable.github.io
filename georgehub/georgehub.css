@@ -1,0 +1,16 @@
+html {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: lightgrey;
+}
+
+.title {
+    text-align: center;
+}
+
+.rightSide {
+    text-align: right;
+}
+
+.leftSide {
+    text-align: left;
+}
