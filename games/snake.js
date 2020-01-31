@@ -13,10 +13,10 @@ function createRect(startX, startY, endX, endY, colour) {
 function findApple(snakeList) {
 while (true) {
     willBreak = 0;
-    var rdmX = Math.floor(Math.random() * 40)
-    var rdmY = Math.floor(Math.random() * 40)
-    rdmX = rdmX * 10
-    rdmY = rdmY * 10
+    var rdmX = Math.floor(Math.random() * c.width / 20)
+    var rdmY = Math.floor(Math.random() * c.height / 20)
+    rdmX = rdmX * 20
+    rdmY = rdmY * 20
     //var tempList = [rdmX, rdmY]
     for (let i = 0; i < snakeList.length; i++) {
         const element = snakeList[i];
@@ -38,7 +38,7 @@ while (true) {
         break;
     }
 }
-createRect(rdmX, rdmY, rdmX + 10, rdmY + 10, "red")
+createRect(rdmX, rdmY, rdmX + 20, rdmY + 20, "red")
 globalThis(apple = [rdmX, rdmY])
 }
 
@@ -48,14 +48,14 @@ function globalThis() {
 
 function startGame() {
 var resetGame = 0
-createRect(0, 0, 400, 400, "lightgrey")
+createRect(0, 0, c.width, c.height, "lightgrey")
 document.getElementById("startBtn").style.visibility = "hidden";
 document.getElementById("playingField").style.visibility = "visible"
-globalThis(snake = [[10, 200]])
+globalThis(snake = [[20, 200]])
 globalThis(rotation = "ArrowRight")
-createRect(10, 200, 20, 210, "black")
-createRect(200, 200, 210, 210, "red")
-globalThis(apple = [200, 200])
+createRect(40, 200, 60, 220, "black")
+createRect(c.width / 2, c.height / 2, c.width / 2 + 20, c.height / 2 + 20, "red")
+globalThis(apple = [c.width / 2, c.height / 2])
 globalThis(loop = setInterval(function() {
     newSnakeLoc()
 }, 100))
@@ -78,43 +78,43 @@ var xToChange = snake[length][0]
 var yToChange = snake[length][1]
 var oldX = snake[0][0]
 var oldY = snake[0][1]
-createRect(oldX, oldY, oldX + 10, oldY + 10, "lightgrey")
+createRect(oldX, oldY, oldX + 20, oldY + 20, "lightgrey")
 snake.shift();
 //Rotataion Detection
 
 switch (rotation) {
     case "ArrowRight":
-        xToChange += 10
+        xToChange += 20
         break;
     case "ArrowLeft":
-        xToChange += -10
+        xToChange += -20
         break;
     case "ArrowUp":
-        yToChange += -10
+        yToChange += -20
         break;
     case "ArrowDown":
-        yToChange += 10
+        yToChange += 20
         break;
 
     default:
         console.log("BIG ERROR - NO DIRECTION FOUND")
         break;
 }
-createRect(xToChange, yToChange, xToChange + 10, yToChange + 10, "black")
+createRect(xToChange, yToChange, xToChange + 20, yToChange + 20, "black")
 snake.push([xToChange, yToChange])
 // detection
 if (xToChange == apple[0]) {
     if (yToChange == apple[1]) {
         apple.shift;
         snake.unshift([oldX, oldY])
-        createRect(oldX, oldY, oldX + 10, oldY + 10, "black")
+        createRect(oldX, oldY, oldX + 20, oldY + 20, "black")
         findApple(snake)
 
     }
 }
 console.log(xToChange)
 console.log(yToChange)
-if (xToChange == -10 || xToChange == 400 || yToChange == -10 || yToChange == 400) {
+if (xToChange == -20 || xToChange == c.width || yToChange == -20 || yToChange == c.height) {
 document.getElementById("startBtn").style.visibility = "visible";
 document.getElementById("playingField").style.visibility = "hidden";
 clearInterval(loop);
