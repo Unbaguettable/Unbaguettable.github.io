@@ -113,8 +113,13 @@ if (xToChange == apple[0]) {
     }
 }
 console.log(xToChange)
-if (xToChange == -10) {
-console.log("correct")
+console.log(yToChange)
+if (xToChange == -10 || xToChange == 400 || yToChange == -10 || yToChange == 400) {
+document.getElementById("startBtn").style.visibility = "visible";
+document.getElementById("playingField").style.visibility = "hidden";
+clearInterval(loop);
+
+
 }
 /*if (xToChange == -10 || xToChange == 400) {
     var resetGame = 1
