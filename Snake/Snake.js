@@ -112,6 +112,10 @@ if (xToChange == apple[0]) {
 
     }
 }
+console.log(xToChange)
+if (xToChange == -10) {
+console.log("correct")
+}
 /*if (xToChange == -10 || xToChange == 400) {
     var resetGame = 1
     console.log("restarting game time")
