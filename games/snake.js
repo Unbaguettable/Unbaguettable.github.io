@@ -1,6 +1,7 @@
 var c = document.getElementById("playingField")
 var ctx = c.getContext("2d")
 document.getElementById("playingField").style.visibility = "hidden"
+document.getElementById("scoreEle").innerHTML = "Click Start To Play!"
 function clearCanvas() {
     ctx.clearRect(0, 0, c.width, c.height);
 }
@@ -24,7 +25,7 @@ while (true) {
             console.log("x bad")
             if (element[1] == rdmY) {
                 console.log("BEEP ALL BAD BEEP")
-            }
+            } 
         } else {
             if (i == snakeList.length - 1) {
             console.log("apple loc gud boi")
@@ -47,18 +48,34 @@ function globalThis() {
 }
 
 function startGame() {
+
 var resetGame = 0
 createRect(0, 0, c.width, c.height, "lightgrey")
 document.getElementById("startBtn").style.visibility = "hidden";
 document.getElementById("playingField").style.visibility = "visible"
-globalThis(snake = [[20, 200]])
+document.getElementById("custoBtn").style.visibility = "hidden";
+globalThis(snake = [[20, 200], [40, 200], [60, 200]])
 globalThis(rotation = "ArrowRight")
-createRect(40, 200, 60, 220, "black")
+globalThis(score = 0)
+if (sessionStorage.getItem("chosenBodySNAKE") === null) {
+globalThis(chosenBody = "black")  
+} else {
+globalThis(chosenBody = sessionStorage.getItem("chosenBodySNAKE")) // Body Colour
+}
+if (sessionStorage.getItem("chosenHeadSNAKE") === null) {
+globalThis(chosenHead = "black")
+} else {
+globalThis(chosenHead = sessionStorage.getItem("chosenHeadSNAKE")) // Head Colour
+} // Head Colour
+document.getElementById("scoreEle").innerHTML = score
+createRect(20, 200, 40, 220, chosenBody)
+createRect(40, 200, 60, 220, chosenBody)
+createRect(60, 200, 80, 220, chosenHead)
 createRect(c.width / 2, c.height / 2, c.width / 2 + 20, c.height / 2 + 20, "red")
 globalThis(apple = [c.width / 2, c.height / 2])
 globalThis(loop = setInterval(function() {
     newSnakeLoc()
-}, 100))
+}, 100)) // DEFAULT 100
 }
 
 function newSnakeLoc() {
@@ -76,13 +93,15 @@ Delete 1
 var length = snake.length - 1;
 var xToChange = snake[length][0]
 var yToChange = snake[length][1]
+createRect(xToChange, yToChange, xToChange + 20, yToChange + 20, chosenBody)
 var oldX = snake[0][0]
 var oldY = snake[0][1]
 createRect(oldX, oldY, oldX + 20, oldY + 20, "lightgrey")
 snake.shift();
-//Rotataion Detection
+//Rotataion Detectio
+rotationP = rotation;
 
-switch (rotation) {
+switch (rotationP) {
     case "ArrowRight":
         xToChange += 20
         break;
@@ -97,86 +116,89 @@ switch (rotation) {
         break;
 
     default:
-        console.log("BIG ERROR - NO DIRECTION FOUND")
+        console.log("Error - No Detection Found")
         break;
 }
-createRect(xToChange, yToChange, xToChange + 20, yToChange + 20, "black")
+createRect(xToChange, yToChange, xToChange + 20, yToChange + 20, chosenHead)
 snake.push([xToChange, yToChange])
-// detection
+// Apple Detection
 if (xToChange == apple[0]) {
     if (yToChange == apple[1]) {
         apple.shift;
         snake.unshift([oldX, oldY])
-        createRect(oldX, oldY, oldX + 20, oldY + 20, "black")
+        createRect(oldX, oldY, oldX + 20, oldY + 20, chosenBody)
         findApple(snake)
+        score++
+        document.getElementById("scoreEle").innerHTML = score
 
     }
 }
+// Border Detection
 console.log(xToChange)
 console.log(yToChange)
 if (xToChange == -20 || xToChange == c.width || yToChange == -20 || yToChange == c.height) {
 document.getElementById("startBtn").style.visibility = "visible";
 document.getElementById("playingField").style.visibility = "hidden";
+document.getElementById("custoBtn").style.visibility = "visible"
+document.getElementById("scoreEle").innerHTML = "You hit the border!"
 clearInterval(loop);
-
-
 }
-/*if (xToChange == -10 || xToChange == 400) {
-    var resetGame = 1
-    console.log("restarting game time")
-    document.getElementById("startBtn").style.visibility = "visible";
-    document.getElementById("playingField").style.visibility = "hidden"
-}
-if (yToChange == -10 || yToChange == 400) {
-    var resetGame = 1
-    console.log("restarting game time")
-    document.getElementById("startBtn").style.visibility = "visible";
-    document.getElementById("playingField").style.visibility = "hidden"
-}
-if (resetGame == 1) {
-    clearInterval(loop);
-}
-
-If frong (xToChange / yToChange) equals another x and y of another part of array, stop.
-*/
-
-/*for (let i = snake.length - 2; i == 0; i - 1) {
-    const element = snake[i];
-    console.log(element)
+// Player Detection
+for (let index = 0; index < snake.length - 1; index++) {
+    const element = snake[index];
     if (element[0] == xToChange) {
-        console.log("x bad")
         if (element[1] == yToChange) {
-            console.log("resetting game")
             document.getElementById("startBtn").style.visibility = "visible";
-            document.getElementById("playingField").style.visibility = "hidden"
-
+            document.getElementById("playingField").style.visibility = "hidden";
+            document.getElementById("custoBtn").style.visibility = "visible"
+            document.getElementById("scoreEle").innerHTML = "You hit yourself!"
+            clearInterval(loop);
         }
-    }   
-} 
-}*/
+    }
+}
 
 document.addEventListener('keydown', function(event) {
  switch (event.key) {
     case "ArrowLeft":
-        if (rotation != "ArrowRight") {
+        if (rotationP != "ArrowRight") {
             rotation = "ArrowLeft"
         }
          break;
     case "ArrowRight":
-        if (rotation != "ArrowLeft") {
+        if (rotationP != "ArrowLeft") {
             rotation = "ArrowRight"
         }
         break;
     case "ArrowUp":
-        if (rotation != "ArrowDown") {
+        if (rotationP != "ArrowDown") {
             rotation = "ArrowUp"
         }
         break;
     case "ArrowDown":
-        if (rotation != "ArrowUp") {
+        if (rotationP != "ArrowUp") {
             rotation = "ArrowDown"
         }
         break;
+        case "a":
+            if (rotationP != "ArrowRight") {
+                rotation = "ArrowLeft"
+            }
+             break;
+        case "d":
+            if (rotationP != "ArrowLeft") {
+                rotation = "ArrowRight"
+            }
+            break;
+        case "w":
+            if (rotationP != "ArrowDown") {
+                rotation = "ArrowUp"
+            }
+            break;
+        case "s":
+            if (rotationP != "ArrowUp") {
+                rotation = "ArrowDown"
+            }
+            break;
     default:
         console.log("non arrow key clicked")
         break;
