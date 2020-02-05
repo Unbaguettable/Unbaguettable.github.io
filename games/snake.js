@@ -140,7 +140,7 @@ if (xToChange == -20 || xToChange == c.width || yToChange == -20 || yToChange ==
 document.getElementById("startBtn").style.visibility = "visible";
 document.getElementById("playingField").style.visibility = "hidden";
 document.getElementById("custoBtn").style.visibility = "visible"
-document.getElementById("scoreEle").innerHTML = "You hit the border!"
+document.getElementById("scoreEle").innerHTML = `You hit the border! Your score was ${score}!`
 clearInterval(loop);
 }
 // Player Detection
@@ -151,7 +151,7 @@ for (let index = 0; index < snake.length - 1; index++) {
             document.getElementById("startBtn").style.visibility = "visible";
             document.getElementById("playingField").style.visibility = "hidden";
             document.getElementById("custoBtn").style.visibility = "visible"
-            document.getElementById("scoreEle").innerHTML = "You hit yourself!"
+            document.getElementById("scoreEle").innerHTML = `You hit yourself! Your score was ${score}!` 
             clearInterval(loop);
         }
     }
