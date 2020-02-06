@@ -1,7 +1,15 @@
 var c = document.getElementById("playingField")
 var ctx = c.getContext("2d")
+/* if (sessionStorage.getItem("canvasXSNAKE") != null) {
+    ctx.width = sessionStorage.getItem("canvasXSNAKE")
+    console.log(ctx.width)
+} */
 document.getElementById("playingField").style.visibility = "hidden"
 document.getElementById("scoreEle").innerHTML = "Click Start To Play!"
+if (localStorage.getItem("highscoreSNAKE") === null) {
+    localStorage.setItem("highscoreSNAKE", 0)
+}
+document.getElementById("highscoreEle").innerHTML = `Your highscore is ${localStorage.getItem("highscoreSNAKE")}`
 function clearCanvas() {
     ctx.clearRect(0, 0, c.width, c.height);
 }
@@ -49,7 +57,6 @@ function globalThis() {
 
 function startGame() {
 
-var resetGame = 0
 createRect(0, 0, c.width, c.height, "lightgrey")
 document.getElementById("startBtn").style.visibility = "hidden";
 document.getElementById("playingField").style.visibility = "visible"
@@ -57,6 +64,7 @@ document.getElementById("custoBtn").style.visibility = "hidden";
 globalThis(snake = [[20, 200], [40, 200], [60, 200]])
 globalThis(rotation = "ArrowRight")
 globalThis(score = 0)
+// Colours
 if (sessionStorage.getItem("chosenBodySNAKE") === null) {
 globalThis(chosenBody = "black")  
 } else {
@@ -67,6 +75,12 @@ globalThis(chosenHead = "black")
 } else {
 globalThis(chosenHead = sessionStorage.getItem("chosenHeadSNAKE")) // Head Colour
 } // Head Colour
+// Speed
+if (sessionStorage.getItem("speedSNAKE") === null) {
+globalThis(speed = 100)
+} else {
+globalThis(speed = sessionStorage.getItem("speedSNAKE"))
+}
 document.getElementById("scoreEle").innerHTML = score
 createRect(20, 200, 40, 220, chosenBody)
 createRect(40, 200, 60, 220, chosenBody)
@@ -75,7 +89,7 @@ createRect(c.width / 2, c.height / 2, c.width / 2 + 20, c.height / 2 + 20, "red"
 globalThis(apple = [c.width / 2, c.height / 2])
 globalThis(loop = setInterval(function() {
     newSnakeLoc()
-}, 100)) // DEFAULT 100
+}, speed)) // DEFAULT 100
 }
 
 function newSnakeLoc() {
@@ -133,14 +147,16 @@ if (xToChange == apple[0]) {
 
     }
 }
-// Border Detection
-console.log(xToChange)
-console.log(yToChange)
+// Border Detectio
 if (xToChange == -20 || xToChange == c.width || yToChange == -20 || yToChange == c.height) {
 document.getElementById("startBtn").style.visibility = "visible";
 document.getElementById("playingField").style.visibility = "hidden";
 document.getElementById("custoBtn").style.visibility = "visible"
 document.getElementById("scoreEle").innerHTML = `You hit the border! Your score was ${score}!`
+if (localStorage.getItem("highscoreSNAKE") < score) {
+localStorage.setItem("highscoreSNAKE", score)
+document.getElementById("highscoreEle").innerHTML = `Your highscore is ${localStorage.getItem("highscoreSNAKE")}`
+}
 clearInterval(loop);
 }
 // Player Detection
@@ -152,6 +168,10 @@ for (let index = 0; index < snake.length - 1; index++) {
             document.getElementById("playingField").style.visibility = "hidden";
             document.getElementById("custoBtn").style.visibility = "visible"
             document.getElementById("scoreEle").innerHTML = `You hit yourself! Your score was ${score}!` 
+            if (localStorage.getItem("highscoreSNAKE") < score) {
+                localStorage.setItem("highscoreSNAKE", score)
+                document.getElementById("highscoreEle").innerHTML = `Your highscore is ${localStorage.getItem("highscoreSNAKE")}`
+                }
             clearInterval(loop);
         }
     }
