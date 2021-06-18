@@ -1,0 +1,121 @@
+import random
+
+# Functions
+def loadGrid():
+    newPiece()
+    clearConsole()
+    print(f"[{gameGrid[0]}] [{gameGrid[1]}] [{gameGrid[2]}] [{gameGrid[3]}]")
+    print(f"[{gameGrid[4]}] [{gameGrid[5]}] [{gameGrid[6]}] [{gameGrid[7]}]")
+    print(f"[{gameGrid[8]}] [{gameGrid[9]}] [{gameGrid[10]}] [{gameGrid[11]}]")
+    print(f"[{gameGrid[12]}] [{gameGrid[13]}] [{gameGrid[14]}] [{gameGrid[15]}]")
+    print("")
+    print("Use W, A, S, D to control the board.")
+    movement()
+
+def newPiece():
+    while True:
+        newRandom = random.randint(0, 15)
+        if (gameGrid[newRandom] == "____"):
+            break
+    
+    gameGrid[newRandom] = random.choice(newNumberList)
+
+def addDash(e):
+    lengthOfInt = len(str(e))
+    eStr = str(e)
+    if (lengthOfInt == 1):
+        return "---" + eStr
+    elif (lengthOfInt == 2):
+        return "--" + eStr
+    elif (lengthOfInt == 3):
+        return "-" + eStr
+    elif (lengthOfInt == 4):
+        return eStr
+    else:
+        print("Error 01 - Interger too long ! You've won ! :)")
+
+def movementOfTiles(tempList, a, b, c):
+    for i in tempList:
+        tempList2 = [i, i+a, i+b, i+c]
+        for e in tempList2:
+            if (gameGrid[e] != "____"): # if its a number
+                eBelow = e+a
+                if(eBelow > 15):
+                    pass
+                elif eBelow in tempList:
+                    pass
+                elif (gameGrid[eBelow] == gameGrid[e]): #if the number below (or more below) is the same, duplicate
+                    gameGrid[e] = "____"
+                    gameGrid[eBelow] = addDash(int(gameGrid[eBelow].replace("-", "")) * 2) #ebelow is a number
+                elif (eBelow < 0):
+                    pass
+                elif (gameGrid[eBelow] == "____"):
+                    gameGrid[eBelow] = gameGrid[e]
+                    gameGrid[e] = "____"
+        for e in tempList2:
+            if (gameGrid[e] != "____"): # if its a number
+                eBelow = e+a
+                if(eBelow > 15):
+                    pass
+                elif eBelow in tempList:
+                    pass
+                elif (gameGrid[eBelow] == gameGrid[e]): #if the number below (or more below) is the same, duplicate
+                    gameGrid[e] = "____"
+                    gameGrid[eBelow] = addDash(int(gameGrid[eBelow].replace("-", "")) * 2) #ebelow is a number
+                elif (eBelow < 0):
+                    pass
+                elif (gameGrid[eBelow] == "____"):
+                    gameGrid[eBelow] = gameGrid[e]
+                    gameGrid[e] = "____"
+
+def movement():
+    moveWay = input("")
+    while True:
+        if (moveWay == "W" or moveWay == "w"):
+            # 0, 4, 8, 12
+            movementOfTiles([12, 13, 14, 15], -4, -8, -12)
+            loadGrid()
+            break
+        elif (moveWay == "S" or moveWay == "s"):
+            #
+            movementOfTiles([0, 1, 2, 3], 4, 8, 12)
+            loadGrid()
+            break
+        elif (moveWay == "A" or moveWay == "a"):
+            # 
+            movementOfTiles([3, 7, 11, 15], -1, -2, -3)
+            loadGrid()
+            break
+        elif (moveWay == "D" or moveWay == "d"):
+            movementOfTiles([0, 4, 8, 12], 1, 2, 3)
+            loadGrid()
+            break
+        else:
+            moveWay = input("That's not one of the movements! >:( try again please : ")
+
+def clearConsole():
+    tempLoop = 0
+    while True:
+        print("")
+        tempLoop = tempLoop + 1
+        if tempLoop == 30:
+            break
+
+newNumberList = ["---2", "---4"]
+
+
+# Setting up the Grid
+gameGrid = ["____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____", "____"]
+
+# Random Starting Locations
+randomPos1 = random.randint(0, 15)
+
+while True:
+    randomPos2 = random.randint(0, 15)
+    if (randomPos1 != randomPos2):
+        break
+
+gameGrid[randomPos1] = "---2"
+gameGrid[randomPos2] = "---2"
+
+loadGrid()
