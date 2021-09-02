@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<body>
+    <div id=test></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        hyKey = "d990aded-5abf-4931-82fc-23b1fbe1114c"
+        axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+        const params = new URLSearchParams(window.location.search)
+        console.log(params.get("user"))
+        axios.get(`https://api.ashcon.app/mojang/v2/user/${params.get("user")}`)
+            .then(function (response) {
+                window.uuid = response.data.uuid
+                window.username = response.data.username
+                console.log(response.data.uuid)
+                console.log(response.data.username)
+                axios.get(`https://api.hypixel.net/friends?key=${hyKey}&uuid=${window.uuid}`)
+                    .then(function (friendResponse) {
+                friends = []
+                console.log(friendResponse.data.records)
+                for (let i = 0; i < friendResponse.data.records.length; i++) {
+                    uuidSender = friendResponse.data.records[i].uuidSender
+                    uuidReceiver = friendResponse.data.records[i].uuidReceiver
+                    if (uuidSender == window.uuid) {
+                        if (friends.includes(uuidReceiver) == false) {
+                            friends.push(uuidReceiver)
+                        }
+                    } else {
+                        if (friends.includes(uuidSender) == false) {
+                            friends.push(uuidSender)
+                        }
+                    }
+                }
+                console.log(friends)
+                div = document.getElementById("test")
+                for (let i = 0; i < friends.length; i++) {
+                    window.friendsUser = []
+                    axios.get(`https://api.ashcon.app/mojang/v2/user/${friends[i]}`)
+                        .then(function (mojangResponse) {
+                            console.log(mojangResponse.data.username)
+                            div.innerHTML += `<a href="?user=${mojangResponse.data.username}">${mojangResponse.data.username}</a><br>`
+                        })
+                }
+
+            })
+            })
+    </script>
+</body>
