@@ -13,6 +13,7 @@
         const params = new URLSearchParams(window.location.search)
         console.log(params.get("name"))
         div = document.getElementById("divID")
+        friends = []
         // Test if there is any search query.
         if (params.get("name") == null) {
         } else {
