@@ -18,6 +18,22 @@
                 window.username = response.data.username
                 //console.log(response.data.uuid)
                 //console.log(response.data.username)
+        // Load Search Query and Variables
+        hyKey = "d990aded-5abf-4931-82fc-23b1fbe1114c"
+        const params = new URLSearchParams(window.location.search)
+        console.log(params.get("name"))
+        div = document.getElementById("divID")
+        friends = []
+        // Test if there is any search query.
+        if (params.get("name") == null) {
+        } else {
+            // Contact API for UUID
+        axios.get(`https://api.ashcon.app/mojang/v2/user/${params.get("name")}`)
+            .then(function (response) {
+                window.uuid = response.data.uuid
+                window.username = response.data.username
+                console.log(response.data.uuid)
+                console.log(response.data.username)
                 // Get Friends using Hypixel API.
                 axios.get(`https://api.hypixel.net/friends?key=${hyKey}&uuid=${window.uuid}`)
                     .then(function (friendResponse) {
@@ -25,6 +41,8 @@
                 //console.log(friendResponse.data.records)
                 // Check which UUID is the friend.
                 console.log("2")
+                console.log(friendResponse.data.records)
+                // Check which UUID is the friend.
                 for (let i = 0; i < friendResponse.data.records.length; i++) {
                     uuidSender = friendResponse.data.records[i].uuidSender
                     uuidReceiver = friendResponse.data.records[i].uuidReceiver
@@ -37,6 +55,7 @@
                             friends.push(uuidSender)
                 }}}
                 //console.log(friends)
+                console.log(friends)
                 // Change those UUIDs back into usernames.
                 for (let i = 0; i < friends.length; i++) {
                     window.friendsUser = []
@@ -133,5 +152,8 @@
         0 -> 1, <- 0, -> 1
 
         */
+                            console.log(mojangResponse.data.username)
+                            div.innerHTML += `<a href="?name=${mojangResponse.data.username}">${mojangResponse.data.username}</a><br>`
+        })}})})}
     </script>
 </body>
