@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Friend Checker</title>
+    </head>
+    <body>
+        <h1 id=usernameID></h2>
+        <!-- Importing Code -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script>
+            const colours = {"DARK_RED":"AA0000","RED":"FF5555","GOLD":"FFAA00","YELLOW":"FFFF55","DARK_GREEN":"00AA00","GREEN":"55FF55","AQUA":"55FFFF","DARK_AQUA":"00AAAA","DARK_BLUE":"0000AA","BLUE":"5555FF","LIGHT_PURPLE":"FF55FF","DARK_PURPLE":"AA00AA","WHITE":"FFFFFF","GRAY":"AAAAAA","DARK_GRAY":"555555","BLACK":"000000"}
+            const hyKey = "d990aded-5abf-4931-82fc-23b1fbe1114c"
+            const params = new URLSearchParams(window.location.search)
+            if (params.get("user") == null) {
+                // No Username
+            } else {
+                getStats()
+            }
+
+            function getStats() {
+                axios.get(`https://api.ashcon.app/mojang/v2/user/${params.get('user')}`)
+                .then(function (response) {
+                   username = response.data.username
+                   uuid = response.data.uuid
+                   console.log(`Username: ${username}\nUUID: ${uuid}`)
+                   axios.get(`https://api.hypixel.net/status?key=${hyKey}&uuid=${uuid}`)
+                   .then(function (response) {
+                       axios.get(`https://api.hypixel.net/player?key=${hyKey}&uuid=${uuid}`)
+                       .then(function (playerStats) {
+                            // display stats, most likely in another function
+                            console.log(playerStats)
+                            hypixelRank = playerStats.data.player.newPackageRank
+                            plusColour = playerStats.data.player.rankPlusColor
+                            if (playerStats.data.player.monthlyPackageRank == "SUPERSTAR") { mvpplusplus = true } else { mvpplusplus = false }
+                            console.log(hypixelRank + " " + plusColour)
+                            displayStats(response)
+                       })
+                   })
+                })
+            }
+
+            function displayStats(response) {
+                displayColour(hypixelRank, plusColour)
+                console.log(response)
+            }
+
+            function displayColour(rank,colour) {
+                document.getElementById("usernameID").innerHTMl = "<h1>hello</h1>"
+                console.log(rank)
+                console.log(colours[colour])
+            }
+        </script>
+    </body>
+</html>
+
+<!--
+    {
+"success": true,
+"uuid": "ad8fefaa8351454bb739a4eaa872173f",
+"session": {
+    "online": true,
+    "gameType": "string",
+    "mode": "string",
+    "map": "string"
+    }1q 
+}
+-->
+<!--
+DARK_RED - AA0000
+RED - FF5555
+GOLD - FFAA00
+YELLOW - FFFF55
+DARK_GREEN - 00AA00
+GREEN - 55FF55
+AQUA - 55FFFF
+DARK_AQUA - 00AAAA
+DARK_BLUE - 0000AA
+BLUE - 5555FF
+LIGHT_PURPLE - FF55FF
+DARK_PURPLE - AA00AA
+WHITE - FFFFFF
+GRAY - AAAAAA
+DARK_GRAY - 555555
+BLACK - 000000
+-->

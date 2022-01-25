@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<body>
+    <form>
+        <!-- <label for="username">Username:</label><br> -->
+        <input type="text" id="username" name="name"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div id=divID></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function getFriends(username) {
+            if (friendsChecked.includes(username) == false) {
+                friendsChecked.push(username)
+                console.log(window.roundsToDo)
+            axios.get(`https://api.ashcon.app/mojang/v2/user/${username}`)
+            .then(function (response) {
+                window.uuid = response.data.uuid
+                window.username = response.data.username
+                //console.log(response.data.uuid)
+                //console.log(response.data.username)
+                // Get Friends using Hypixel API.
+                axios.get(`https://api.hypixel.net/friends?key=${hyKey}&uuid=${window.uuid}`)
+                    .then(function (friendResponse) {
+                friends = []
+                //console.log(friendResponse.data.records)
+                // Check which UUID is the friend.
+                console.log("2")
+                for (let i = 0; i < friendResponse.data.records.length; i++) {
+                    uuidSender = friendResponse.data.records[i].uuidSender
+                    uuidReceiver = friendResponse.data.records[i].uuidReceiver
+                    if (uuidSender == window.uuid) {
+                        if (friends.includes(uuidReceiver) == false) {
+                            friends.push(uuidReceiver)
+                        }
+                    } else {
+                        if (friends.includes(uuidSender) == false) {
+                            friends.push(uuidSender)
+                }}}
+                //console.log(friends)
+                // Change those UUIDs back into usernames.
+                for (let i = 0; i < friends.length; i++) {
+                    window.friendsUser = []
+                    axios.get(`https://api.ashcon.app/mojang/v2/user/${friends[i]}`)
+                        .then(function (mojangResponse) {
+                            //console.log(mojangResponse.data.username)
+                            window.friendsUser.push(mojangResponse.data.username)
+                            div.innerHTML += `<a href="?name=${mojangResponse.data.username}">${mojangResponse.data.username}</a><br>`
+                            // When it's last friend:
+                            if (i == friends.length - 1) {
+                                console.log(window.roundCheck)
+                                window.roundCheck = window.roundCheck - 1
+                                // If this is the last one of the "round"
+                                if (window.roundCheck == 0) {
+                                    console.log(window.roundNum)
+                                    if (window.roundNum == window.roundsToDo) {
+                                        console.log("PROGRAM ENDED")
+                                    } else {
+                                    for (let i = 0; i < friendsUser.length; i++) {
+                                        if (friendsChecked.includes(friendsUser[i]) == false) {
+                                            console.log(`new friend not checked, round number temp ${window.roundCheck}`)
+                                            window.roundCheck++
+                                        }
+                                    }
+                                    console.log(`Round ${window.roundNum}, Amount of repeats ${window.roundCheck}`)
+                                    for (let i = 0; i < friendsUser.length; i++) {
+                                        if (friendsChecked.includes(friendsUser[i]) == false) {
+                                            console.log(`checking new friend ${friendsUser[i]}`)
+                                            getFriends(friendsUser[i])
+                                        }
+                                    }
+                                }}
+                            }
+                        }
+            ).catch(errorHandling)}}).catch(errorHandling)}).catch(errorHandling)}}
+
+        function errorHandling() {
+            console.log("Error occured contacting API")
+            alert("API error")
+        }
+
+        function main() {
+        console.log("1")
+        // Load Search Query and Variables
+        hyKey = "d990aded-5abf-4931-82fc-23b1fbe1114c"
+        const params = new URLSearchParams(window.location.search)
+        console.log(params.get("name"))
+        console.log(params.get("round"))
+        window.roundsToDo = params.get("round")
+        if (params.get("round") == null) {
+            window.roundsToDo = 1
+        }
+        div = document.getElementById("divID")
+        // internal check for rounds
+        window.roundCheck = 1
+        // amount of rounds done so far
+        window.roundNum = 1
+
+        // All the friends UUIDs
+        friends = []
+
+        // All the friends usernames
+        friendsUser = []
+
+        // All the usernames of people who have been checked.
+        friendsChecked = []
+
+        // Test if there is any search query.
+        if (params.get("name") == null) {
+            console.log("no name")
+        } else {
+            console.log("1")
+            getFriends(params.get("name"))
+        }}
+
+        main()
+
+        /*
+
+        when a friend gathering ends:
+        if end of a round: count all friends NOT in the list already
+        and then set "roundNum = <num>"
+        and then start a for loop?
+
+        if NOT end of a round
+        just do roundNum = roundNum - 1
+        
+
+
+        20
+        -1
+        = 0
+
+        0 -> 1, <- 0, -> 1
+
+        */
+    </script>
+</body>
