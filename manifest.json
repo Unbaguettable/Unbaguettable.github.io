@@ -1,6 +1,6 @@
 {
-    "short_name": "Weather",
-    "name": "Weather: Do I need an umbrella?",
+    "short_name": "Test",
+    "name": "Test! :)",
     "icons": [
       {
         "src": "192.png",
@@ -18,19 +18,5 @@
     "display": "standalone",
     "scope": "/",
     "theme_color": "#3367D6",
-    "shortcuts": [
-      {
-        "name": "How's weather today?",
-        "short_name": "Today",
-        "description": "View weather information for today",
-        "url": "/today?source=pwa"
-      },
-      {
-        "name": "How's weather tomorrow?",
-        "short_name": "Tomorrow",
-        "description": "View weather information for tomorrow",
-        "url": "/tomorrow?source=pwa"
-      }
-    ],
-    "description": "Weather forecast information"
+    "description": "testing if i can install this"
   }

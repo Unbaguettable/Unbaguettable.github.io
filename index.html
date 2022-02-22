@@ -23,10 +23,10 @@
 <a href="games/binary"><button>Binary Game</button></a>
 <a href="BinToDec/binToDec"><button>Binary to Decimal Converter</button></a>
 <a href="games/snake"><button>Snake</button></a>
-<p>test 2</p>
+<p>test 3</p>
 <script>
     if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').then(function(reg) {
+    navigator.serviceWorker.register('sw.js').then(function(reg) {
         console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
         console.warn('Error whilst registering service worker', err);
