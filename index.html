@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="shortcut icon" href="images/favicon.png"/>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <meta property="og:title" content="Unbaguettable" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="Unbaguettable.github.io" />
@@ -18,7 +19,7 @@
 </div>
 <br>
 <br>
-<p>Hey! im unbaguettable and idk im some random person on the internet. i code a bit when im not playing games so here is an archive of that (mostly awful) work. also most this stuff is a couple years old so i wasnt lying when i said it was awful. 🇺🇦</p>
+<p>Hey! im unbaguettable and idk im some random person on the internet. i code a bit when im not playing games so here is an archive of that (mostly awful) work. also most this stuff is a couple years old so i wasnt lying when i said it was awful. <br>🇺🇦</p>
 <br><h3 id="projects">Projects</h3>
 <a href="chat/index.html"><button>Chat (doesn't work lol)</button></a>
 <script>
@@ -29,6 +30,7 @@
         console.warn('Error whilst registering service worker', err);
     });
     }
+    twemoji.parse(document.body);
 </script>
 </body>
 </html>
