@@ -1,9 +1,234 @@
+<!--
+Rain Effect:
+
+Copyright (c) 2022 by Aaron Rickle (https://codepen.io/arickle/pen/XKjMZY)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+
 <html>
     <head>
-        <title>Error 404</title>
+        <title>404</title>
+        <link rel="shortcut icon" href="images/favicon.png"/>
     </head>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <body>
-        <h1>Error 404 - File not found</h1>
-        <p>LLL + Ratio</p>
+    <h1>404</h1>
+    <div class="rain front-row"></div>
+    <div class="rain back-row"></div>
+    <div class="belowRain"> 
+        <div class="explain"><p style="font-size: 20px;"><i>There's nothing here.</i></p>
+        <p style="font-size: 18px; color:rgb(173, 173, 173)">Lucky for you, all my projects suck. You've probably dodged a bullet.</p></div>
+        <a href="index.html"><button>Back Home...</button></a>
+    </div>
     </body>
-</html>
+    <style>
+
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #202020, #111119);
+  text-align: center;
+  color: white;
+  font-family: Tahoma;
+}
+
+h1 {
+    font-size: 100px;
+    margin:25px;
+    text-shadow: rgba(255, 255, 255, 0.5) 0 1px 100px;
+    transition-duration: 1s;
+
+}
+
+h1:hover {
+    text-shadow: rgba(11, 255, 141, 0.986) 0 1px 150px;
+    transition-duration: 1s;
+}
+
+.explain {
+    text-shadow: rgba(255, 255, 255, 0.5) 0 1px 25px;
+    transition-duration: 1s;
+
+}
+
+.explain:hover {
+    text-shadow: rgba(255, 255, 255, 0.5) 0 1px 5px;
+    transition-duration: 1s;
+}
+
+button { 
+    background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer; flex-shrink: 0;
+    font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 3rem;
+    padding: 0 1.6rem;
+    text-align: center;
+    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+    transition: all .5s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation; 
+}
+    
+button:hover {
+    box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+    transition-duration: .1s;
+} 
+     
+@media (min-width: 768px) { .button-36 { padding: 0 2.6rem; } }
+
+.belowRain {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 80%;
+    margin: 0;
+    padding: 0;
+}
+
+.rain {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  z-index: -1;
+}
+
+.rain.back-row {
+  display: none;
+  z-index: -2;
+  bottom: 60px;
+  opacity: 0.5;
+}
+
+body.back-row-toggle .rain.back-row {
+  display: block;
+}
+
+.drop {
+  position: absolute;
+  bottom: 100%;
+  width: 15px;
+  height: 120px;
+  pointer-events: none;
+  animation: drop 0.5s linear infinite;
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(0vh);
+  }
+  75% {
+    transform: translateY(90vh);
+  }
+  100% {
+    transform: translateY(90vh);
+  }
+}
+
+.stem {
+  width: 1px;
+  height: 60%;
+  margin-left: 7px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
+  animation: stem 0.5s linear infinite;
+}
+
+@keyframes stem {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.splat {
+  width: 15px;
+  height: 10px;
+  border-top: 2px dotted rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  opacity: 1;
+  transform: scale(0);
+  animation: splat 0.5s linear infinite;
+  display: none;
+}
+
+body.splat-toggle .splat {
+  display: block;
+}
+
+@keyframes splat {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  90% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+    </style>
+    <script>var makeItRain = function() {
+        //clear out everything
+        $('.rain').empty();
+      
+        var increment = 0;
+        var drops = "";
+        var backDrops = "";
+      
+        while (increment < 100) {
+          //couple random numbers to use for various randomizations
+          //random number between 98 and 1
+          var randoHundo = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
+          //random number between 5 and 2
+          var randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2));
+          //increment
+          increment += randoFiver;
+          //add in a new raindrop with various randomizations to certain CSS properties
+          drops += '<div class="drop" style="left: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+          backDrops += '<div class="drop" style="right: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+        }
+      
+        $('.rain.front-row').append(drops);
+        $('.rain.back-row').append(backDrops);
+      }
+      
+      $('.splat-toggle.toggle').on('click', function() {
+        $('.splat-toggle.toggle').toggleClass('active');
+        makeItRain();
+      });
+      
+      $('.back-row-toggle.toggle').on('click', function() {
+        $('.back-row-toggle.toggle').toggleClass('active');
+        makeItRain();
+      });
+      $('body').toggleClass('back-row-toggle');
+      $('body').toggleClass('splat-toggle');
+      makeItRain()
+
+</script>
+</html> 
