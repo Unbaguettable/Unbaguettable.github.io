@@ -10,6 +10,7 @@ The above copyright notice and this permission notice shall be included in all c
     <head>
         <title>404</title>
         <link rel="shortcut icon" href="images/favicon.png"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     </head>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <body>
@@ -21,6 +22,7 @@ The above copyright notice and this permission notice shall be included in all c
         <p style="font-size: 18px; color:rgb(173, 173, 173)">Lucky for you, all my projects suck. You've probably dodged a bullet.</p></div>
         <a href="index.html"><button>Back Home...</button></a>
     </div>
+    <button class="rainBtn" onclick="toggle()"><span class="material-symbols-outlined">water_drop</span></button>
     </body>
     <style>
 
@@ -33,6 +35,16 @@ body {
   text-align: center;
   color: white;
   font-family: Tahoma,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif
+}
+
+.rainBtn {
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
 }
 
 h1 {
@@ -90,7 +102,7 @@ button:hover {
     position: absolute;
     left: 0;
     right: 0;
-    top: 79%;
+    bottom: 3%;
     margin: 0;
     padding: 0;
 }
@@ -112,6 +124,10 @@ button:hover {
 
 body.back-row-toggle .rain.back-row {
   display: block;
+}
+
+body.front-row-toggle .rain {
+  display: none;
 }
 
 .drop {
@@ -173,6 +189,8 @@ body.splat-toggle .splat {
   display: block;
 }
 
+
+
 @keyframes splat {
   0% {
     opacity: 1;
@@ -229,6 +247,13 @@ body.splat-toggle .splat {
       $('body').toggleClass('back-row-toggle');
       $('body').toggleClass('splat-toggle');
       makeItRain()
+
+      var toggle = function() {
+        $('body').toggleClass('back-row-toggle');
+        $('body').toggleClass('splat-toggle');
+        $('body').toggleClass('front-row-toggle');
+        makeItRain();
+      }
 
 </script>
 </html> 
