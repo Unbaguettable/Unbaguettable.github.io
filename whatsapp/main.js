@@ -142,11 +142,10 @@ const newAnalyse = function(sendingTo){
         streakMsgTime = convertTime(message[0], message[1])
         timeDifference = streakMsgTime - currentTimeStreak
         averageTime += timeDifference
-        if (timeDifference > longestMsgTime) { longestMsgTime = timeDifference }
+        if (timeDifference > longestMsgTime) { longestMsgTime = timeDifference; longestTime = streakMsgTime; console.log("New longest time"); console.log(longestTime) }
         currentTimeStreak = streakMsgTime
         if (timeDifference < 600000) { currentStreak += 1 } else { currentStreak = 0 }
-        console.log(currentStreak)
-        if (currentStreak > longestStreak) { longestStreak = currentStreak; conversationTime = convertTime(message[0], message[1]) }
+        if (currentStreak > longestStreak) { longestStreak = currentStreak; conversationTime = streakMsgTime }
       }
   }
   // Averages
@@ -170,10 +169,11 @@ const newAnalyse = function(sendingTo){
 
   longestTimeDate = new Date(longestMsgTime)
   longestTimeDays = Math.floor(longestMsgTime / 86400000)
-  longestTimes = [longestTimeDays, longestTimeDate.getUTCHours().toString().padStart(2,"0"), longestTimeDate.getUTCMinutes().toString().padStart(2,"0"), longestTimeDate.getUTCSeconds().toString().padStart(2,"0")]
+  longestTimeTime = new Date(longestTime)
+  longestTimes = [longestTimeDays, longestTimeDate.getUTCHours().toString().padStart(2,"0"), longestTimeDate.getUTCMinutes().toString().padStart(2,"0"), longestTimeDate.getUTCSeconds().toString().padStart(2,"0"),longestTimeTime.getUTCDate().toString().padStart(2,"0"), (longestTimeTime.getUTCMonth()+1).toString().padStart(2,"0"), longestTimeTime.getUTCFullYear().toString().padStart(2,"0")]
 
   conversationDate = new Date(conversationTime)
-  convoTimes = [longestStreak, conversationDate.getUTCDate().toString().padStart(2,"0"), conversationDate.getUTCMonth().toString().padStart(2,"0"), conversationDate.getUTCFullYear().toString().padStart(2,"0")]
+  convoTimes = [longestStreak, conversationDate.getUTCDate().toString().padStart(2,"0"), (conversationDate.getUTCMonth()+1).toString().padStart(2,"0"), conversationDate.getUTCFullYear().toString().padStart(2,"0")]
 
   mostUsedEmoji = Object.entries(emojis).reduce((a, b) => a[1] > b[1] ? a : b)[0];
   mostUsedEmoji = [mostUsedEmoji, emojis[mostUsedEmoji]]
@@ -296,7 +296,7 @@ const updateTabs = function(param) {
   <h2>Time Between Messages</h2>
   <p class="explain">A "conversation" is defined as no more of a gap of 10 minutes between messages.</p><br>
   <p>Average time between messages: <b>${averageTimes[0]>1?averageTimes[0] + ' days, ':''}${averageTimes[1]}:${averageTimes[2]}:${averageTimes[3]}</b></p>
-  <p>Longest time between messages: <b>${longestTimes[0]>1?longestTimes[0] + ' days, ':''}${longestTimes[1]}:${longestTimes[2]}:${longestTimes[3]}</b></p>
+  <p>Longest time between messages: <b>${longestTimes[0]>1?longestTimes[0] + ' days, ':''}${longestTimes[1]}:${longestTimes[2]}:${longestTimes[3]}</b> on <b>${longestTimes[4]}/${longestTimes[5]}/${longestTimes[6]}</b></p>
   <p>Longest conversation: <b>${convoTimes[0]}</b> messages on <b>${convoTimes[1]}/${convoTimes[2]}/${convoTimes[3]}</b></p>
   </div>
   <p class="credit">Made with 😎 by <a href="https://github.com/Unbaguettable" style="text-decoration: underline;color:white;" target="_blank" rel="noopener noreferrer">Unbaguettable</a></p>
