@@ -77,8 +77,6 @@ const saveMessages = (text) => {
 }
 
     /* Possible things to look at:
-    - number of messages
-    - number of images / attachments
     - time / date
     - most popular words
     - get conversation with most messages
@@ -95,6 +93,16 @@ const newAnalyse = function(sendingTo){
   emojis = {}
   emojiCount = 0
   averageDay = {"1d":0,"7d":0,"30d":0,"90d":0,"180d":0,"365d":0, "alltime":0}
+  firstMsgTime = convertTime(messages[sendingTo][0][0], messages[sendingTo][0][1])
+  averageTimes = [0,0,0]
+  averageTime = 0
+  currentUsernameStreak = ""
+  longestMsgTime = 0
+  longestTimes = [0,0,0]
+  currentTimeStreak = firstMsgTime
+  longestStreak = 0
+  currentStreak = 0
+  conversationTime = ""
 
   for (const message of messages[sendingTo]) {
 
@@ -126,12 +134,22 @@ const newAnalyse = function(sendingTo){
         for (const emoji of emojiCheck) {
           if (!emojis[emoji]) { emojis[emoji] = 1 } else { emojis[emoji] += 1 }
           emojiCount += 1
+        }
       }
-    }
-
+      // Time Streaks
+      if (message[2] != currentUsernameStreak) {
+        currentUsernameStreak = message[2]
+        streakMsgTime = convertTime(message[0], message[1])
+        timeDifference = streakMsgTime - currentTimeStreak
+        averageTime += timeDifference
+        if (timeDifference > longestMsgTime) { longestMsgTime = timeDifference }
+        currentTimeStreak = streakMsgTime
+        if (timeDifference < 600000) { currentStreak += 1 } else { currentStreak = 0 }
+        console.log(currentStreak)
+        if (currentStreak > longestStreak) { longestStreak = currentStreak; conversationTime = convertTime(message[0], message[1]) }
+      }
   }
   // Averages
-  firstMsgTime = convertTime(messages[sendingTo][0][0], messages[sendingTo][0][1])
   timeSince = currentTime - firstMsgTime
   timeSince = timeSince / 86400000
   timeSince = Math.floor(timeSince)
@@ -143,9 +161,23 @@ const newAnalyse = function(sendingTo){
   averageDay["365d"] = Math.round(times["365d"] / 365 * 100) / 100
   averageDay["alltime"] = Math.round(messages[sendingTo].length / timeSince * 100) / 100
 
+  // Time Streaks
+  
+  averageTime = Math.round(averageTime / messages[sendingTo].length)
+  averageTimeDate = new Date(averageTime)
+  averageTimeDays = Math.floor(averageTime / 86400000)
+  averageTimes = [averageTimeDays, averageTimeDate.getUTCHours().toString().padStart(2,"0"), averageTimeDate.getUTCMinutes().toString().padStart(2,"0"), averageTimeDate.getUTCSeconds().toString().padStart(2,"0")]
+
+  longestTimeDate = new Date(longestMsgTime)
+  longestTimeDays = Math.floor(longestMsgTime / 86400000)
+  longestTimes = [longestTimeDays, longestTimeDate.getUTCHours().toString().padStart(2,"0"), longestTimeDate.getUTCMinutes().toString().padStart(2,"0"), longestTimeDate.getUTCSeconds().toString().padStart(2,"0")]
+
+  conversationDate = new Date(conversationTime)
+  convoTimes = [longestStreak, conversationDate.getUTCDate().toString().padStart(2,"0"), conversationDate.getUTCMonth().toString().padStart(2,"0"), conversationDate.getUTCFullYear().toString().padStart(2,"0")]
+
   mostUsedEmoji = Object.entries(emojis).reduce((a, b) => a[1] > b[1] ? a : b)[0];
   mostUsedEmoji = [mostUsedEmoji, emojis[mostUsedEmoji]]
-  return [sendingTo, messageCount, specialString, times, emojis, emojiCount, mostUsedEmoji, averageDay]
+  return [sendingTo, messageCount, specialString, times, emojis, emojiCount, mostUsedEmoji, averageDay, averageTimes, longestTimes, convoTimes]
 }
 
 const analyseAll = function(){
@@ -192,7 +224,7 @@ const analyseAll = function(){
 // ---- FILE ----
 
 const updateTabs = function(param) {
-  const [sendingTo, messageCount, specialString, times, emojis, emojiCount, mostUsedEmoji, averageDay] = param
+  const [sendingTo, messageCount, specialString, times, emojis, emojiCount, mostUsedEmoji, averageDay, averageTimes, longestTimes, convoTimes] = param
   // Get the chat-list and stats divs
   const chatList = document.querySelector('.chat-list');
   const stats = document.querySelector('.stats');
@@ -250,16 +282,22 @@ const updateTabs = function(param) {
     </div>
     <div class="stat-box">
       <h2>First Message</h2>
-      <p class="explain">Your first message in this chat is: </p><br>
+      <p class="explain">The first message in this chat is: </p><br>
       <p><b>${messages[sendingTo][0][2]}</b>: ${messages[sendingTo][0 ][3]}</p>
       <p>(Sent at <b>${messages[sendingTo][0][0]}</b> at <b>${messages[sendingTo][0][1]}</b>)</p>
     </div>
     <div class="stat-box">
       <h2>Last Message</h2>
-      <p class="explain">Your last message in this chat is: </p><br>
+      <p class="explain">The last message in this chat is: </p><br>
       <p><b>${messages[sendingTo].slice(-1)[0][2]}</b>: ${messages[sendingTo].slice(-1)[0][3]}</p>
       <p>(Sent at <b>${messages[sendingTo].slice(-1)[0][0]}</b> at <b>${messages[sendingTo].slice(-1)[0][1]}</b>)</p>
   </div>
+  <div class="stat-box">
+  <h2>Time Between Messages</h2>
+  <p class="explain">A "conversation" is defined as no more of a gap of 10 minutes between messages.</p><br>
+  <p>Average time between messages: <b>${averageTimes[0]>1?averageTimes[0] + ' days, ':''}${averageTimes[1]}:${averageTimes[2]}:${averageTimes[3]}</b></p>
+  <p>Longest time between messages: <b>${longestTimes[0]>1?longestTimes[0] + ' days, ':''}${longestTimes[1]}:${longestTimes[2]}:${longestTimes[3]}</b></p>
+  <p>Longest conversation: <b>${convoTimes[0]}</b> messages on <b>${convoTimes[1]}/${convoTimes[2]}/${convoTimes[3]}</b></p>
   </div>
   <p class="credit">Made with 😎 by <a href="https://github.com/Unbaguettable" style="text-decoration: underline;color:white;" target="_blank" rel="noopener noreferrer">Unbaguettable</a></p>
 

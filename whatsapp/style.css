@@ -55,6 +55,7 @@ body {
 }
 
 .stats {
+  overflow: auto;
   position:relative;
   align-items: center;
   flex-basis: 80%;
@@ -102,7 +103,7 @@ h1 {
 }
 
 .credit {
-  position: absolute;
+  position: fixed;
   bottom: 2%;
   left: 0;
   right: 0;
